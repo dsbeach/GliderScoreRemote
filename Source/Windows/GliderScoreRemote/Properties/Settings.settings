@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GliderScoreRemote.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PollingFrequency" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="BroadcastDelay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="UDPTimerPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5723</Value>
+    </Setting>
+    <Setting Name="UDPTelemetryPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5724</Value>
+    </Setting>
+    <Setting Name="TimerComPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;none&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

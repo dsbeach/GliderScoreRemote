@@ -58,6 +58,6 @@ double CpuStats::Get5MinuteLoadAvg() {
 
 	loadAvgFile.close();
 
-
-	return loadAvg / cpuCount * 100;
+    double load = loadAvg / (double)cpuCount;
+	return load;
 }

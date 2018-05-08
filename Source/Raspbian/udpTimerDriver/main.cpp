@@ -141,16 +141,20 @@ int main( int argc, char *argv[] ) {
 	char recvBytes[512];
 	uint recvLen;
 	sockaddr saddrRemote;
+	string lastMsg = "";
 
 	while (true) {
 		recvLen = recvfrom(recvSocket, recvBytes, sizeof(recvBytes) - 1, 0, (sockaddr *) &saddrRemote, &recvLen);
 		if (recvLen > 0) {
 			recvBytes[recvLen] = 0;
-			if (verbose) {
-				string msg = recvBytes;
-				cout << "Received:" << msg.substr(0, recvLen-1) << endl;
-			}
+			string msg = recvBytes;
+			if (lastMsg.compare(msg) != 0) {
+				if (verbose) {
+					cout << "Received:" << msg.substr(0, recvLen-1) << endl;
+				}
 			serial_stream.write(recvBytes, recvLen);
+			lastMsg = msg;
+			}
 		}
 		else {
 			cout << "Receive error, errno=" << errno << endl;

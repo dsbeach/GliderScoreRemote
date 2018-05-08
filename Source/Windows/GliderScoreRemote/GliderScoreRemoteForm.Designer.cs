@@ -251,7 +251,7 @@
             // 
             // tpStatus
             // 
-            this.tpStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.tpStatus.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tpStatus.Controls.Add(this.tcRemoteStatus);
             this.tpStatus.Controls.Add(this.panel2);
             this.tpStatus.Controls.Add(this.lUDPTelemetryRecdData);
@@ -275,7 +275,7 @@
             // 
             // tpSettings
             // 
-            this.tpSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.tpSettings.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tpSettings.Controls.Add(this.cbTimerComPort);
             this.tpSettings.Controls.Add(this.label8);
             this.tpSettings.Controls.Add(this.label1);
@@ -318,6 +318,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(948, 631);
             this.Controls.Add(this.tcMain);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

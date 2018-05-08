@@ -30,8 +30,8 @@ namespace GliderScoreRemote
         {
             InitializeComponent();
 
-            tcMain.DrawItem += tcMain_DrawItem;
-            tcRemoteStatus.DrawItem += tcRemoteStatus_DrawItem;
+            tcMain.DrawItem += TabPage_DrawItem;
+            tcRemoteStatus.DrawItem += TabPage_DrawItem;
             NetworkChange.NetworkAddressChanged += new
             NetworkAddressChangedEventHandler(NetworkAddressChangedCallback);
         }
@@ -162,6 +162,8 @@ namespace GliderScoreRemote
                 tpRemoteStatus = new TabPage(hostname);
                 tpRemoteStatus.Size = tcRemoteStatus.ClientSize;
                 tpRemoteStatus.Tag = new RemoteStatus(tpRemoteStatus);
+                tpRemoteStatus.BackColor = SystemColors.AppWorkspace;
+                //tpRemoteStatus.ForeColor = SystemColors.Control;
                 // need to keep the tab pages in alphabetical order
                 int index = 0;
                 foreach (TabPage tp in tcRemoteStatus.TabPages.Cast<TabPage>().OrderBy(c => c.Text))
@@ -245,28 +247,30 @@ namespace GliderScoreRemote
             writerThread.Start(); // will reset adapter send list
         }
 
-        private void tcMain_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            TabPage page = tcMain.TabPages[e.Index];
-            e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
-
-            Rectangle paddedBounds = e.Bounds;
-            int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
-            paddedBounds.Offset(1, yOffset);
-            TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
-        }
-
-        private void tcRemoteStatus_DrawItem(object sender, DrawItemEventArgs e)
+        private void TabPage_DrawItem(object sender, DrawItemEventArgs e)
         {
             try
             {
-                TabPage page = tcRemoteStatus.TabPages[e.Index];
-                e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
-
+                TabPage page = ((TabControl)sender).TabPages[e.Index];
+                SolidBrush bkgrndBrush;
+                Color textColor;
+                int yOffset;
+                if (e.State == DrawItemState.Selected)
+                {
+                    bkgrndBrush = new SolidBrush(page.BackColor);
+                    textColor = page.ForeColor;
+                    yOffset = -2;
+                }
+                else
+                {
+                    bkgrndBrush = new SolidBrush(SystemColors.ControlLight);
+                    textColor = SystemColors.ControlDark;
+                    yOffset = 1;
+                }
+                e.Graphics.FillRectangle(bkgrndBrush, e.Bounds);
                 Rectangle paddedBounds = e.Bounds;
-                int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
                 paddedBounds.Offset(1, yOffset);
-                TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
+                TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, textColor);
             }
             catch { } // possible to get data before the tab page is ready - just ignore it
         }

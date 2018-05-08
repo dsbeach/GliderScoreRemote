@@ -68,6 +68,7 @@ namespace GliderScoreRemote
                     case "hostname":
                         break;
                     case "ips":
+                        lIP1.Text = lIP2.Text = "";
                         string[] ips = values[1].Split(',');
                         if (ips.Length >= 1)
                         {

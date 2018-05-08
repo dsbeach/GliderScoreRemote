@@ -60,10 +60,11 @@
             // lLowValue
             // 
             this.lLowValue.AutoSize = true;
-            this.lLowValue.Location = new System.Drawing.Point(206, 0);
+            this.lLowValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lLowValue.Location = new System.Drawing.Point(309, 11);
             this.lLowValue.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lLowValue.Name = "lLowValue";
-            this.lLowValue.Size = new System.Drawing.Size(94, 24);
+            this.lLowValue.Size = new System.Drawing.Size(54, 13);
             this.lLowValue.TabIndex = 2;
             this.lLowValue.Text = "LowValue";
             this.lLowValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -71,21 +72,24 @@
             // lHighValue
             // 
             this.lHighValue.AutoSize = true;
-            this.lHighValue.Location = new System.Drawing.Point(678, 0);
+            this.lHighValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lHighValue.Location = new System.Drawing.Point(662, 11);
             this.lHighValue.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lHighValue.Name = "lHighValue";
-            this.lHighValue.Size = new System.Drawing.Size(99, 24);
+            this.lHighValue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lHighValue.Size = new System.Drawing.Size(56, 13);
             this.lHighValue.TabIndex = 3;
             this.lHighValue.Text = "HighValue";
+            this.lHighValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lCurrentValue
             // 
             this.lCurrentValue.AutoSize = true;
             this.lCurrentValue.BackColor = System.Drawing.Color.Transparent;
-            this.lCurrentValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lCurrentValue.Location = new System.Drawing.Point(445, 0);
+            this.lCurrentValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lCurrentValue.Location = new System.Drawing.Point(232, 0);
             this.lCurrentValue.Name = "lCurrentValue";
-            this.lCurrentValue.Size = new System.Drawing.Size(10, 13);
+            this.lCurrentValue.Size = new System.Drawing.Size(15, 24);
             this.lCurrentValue.TabIndex = 4;
             this.lCurrentValue.Text = ".";
             this.lCurrentValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

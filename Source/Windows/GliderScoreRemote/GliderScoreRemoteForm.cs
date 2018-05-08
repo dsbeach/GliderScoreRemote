@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -31,6 +32,8 @@ namespace GliderScoreRemote
 
             tcMain.DrawItem += tcMain_DrawItem;
             tcRemoteStatus.DrawItem += tcRemoteStatus_DrawItem;
+            NetworkChange.NetworkAddressChanged += new
+            NetworkAddressChangedEventHandler(NetworkAddressChangedCallback);
         }
 
         private void GliderScoreRemoteForm_Load(object sender, EventArgs e)
@@ -233,6 +236,13 @@ namespace GliderScoreRemote
             {
                 MessageBox.Show("UDP Telemetry Port must be numeric! Exception: " + ex.Message, "Correct and retry", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        void NetworkAddressChangedCallback(object sender, EventArgs e)
+        {
+            tbUDPTelemetryPort_TextChanged(null, null); // force listening on all available interfaces
+            writerThread.Stop();
+            writerThread.Start(); // will reset adapter send list
         }
 
         private void tcMain_DrawItem(object sender, DrawItemEventArgs e)

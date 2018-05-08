@@ -23,7 +23,35 @@ namespace GliderScoreRemote
         public DeferredDataWriterThread(ref BlockingCollection<DeferredData> queue)
         {
             this.queue = queue;
+        }
 
+        public void Start()
+        {
+            getSendClients();
+            writerThread = new Thread(writeDeferredData);
+            writerThread.Start();
+        }
+
+        public void Stop()
+        {
+            if (serialPort.IsOpen)
+            {
+                serialPort.DiscardInBuffer();
+                serialPort.DiscardOutBuffer();
+                serialPort.Close();
+            }
+            writerThread.Abort();
+            writerThread.Join();
+        }
+
+        public bool IsAlive()
+        {
+            return writerThread.IsAlive;
+        }
+
+        private void getSendClients()
+        {
+            sendClients.Clear();
             // join multicast group on all available network interfaces
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
 
@@ -55,33 +83,14 @@ namespace GliderScoreRemote
                     continue;
                 }
 
-                UdpClient sendClient = new UdpClient(new IPEndPoint(ipAddress,0));
+                if (IPAddress.IsLoopback(ipAddress))
+                {
+                    continue;
+                }
+
+                UdpClient sendClient = new UdpClient(new IPEndPoint(ipAddress, 0));
                 sendClients.Add(sendClient);
             }
-
-        }
-
-        public void Start()
-        {
-            writerThread = new Thread(writeDeferredData);
-            writerThread.Start();
-        }
-
-        public void Stop()
-        {
-            if (serialPort.IsOpen)
-            {
-                serialPort.DiscardInBuffer();
-                serialPort.DiscardOutBuffer();
-                serialPort.Close();
-            }
-            writerThread.Abort();
-            writerThread.Join();
-        }
-
-        public bool IsAlive()
-        {
-            return writerThread.IsAlive;
         }
 
         public void writeDeferredData()
@@ -93,10 +102,8 @@ namespace GliderScoreRemote
                 while (true)
                 {
                     data = queue.Take(); // blocks until data is available
-
-                    // HERE I AM - detect a change in com port parameters and handle accordingly
-
-                    System.Diagnostics.Debug.WriteLine(String.Format("UDPPort: {0}, ComPort: {1}, SendTime: {2}, Message: {3}", data.udpPort, data.comPort, data.sendTime, data.message));
+                    
+                    //System.Diagnostics.Debug.WriteLine(String.Format("UDPPort: {0}, ComPort: {1}, SendTime: {2}, Message: {3}", data.udpPort, data.comPort, data.sendTime, data.message));
 
                     int delay = (int)data.sendTime.Subtract(DateTime.Now).TotalMilliseconds;
                     if (delay > 0)
@@ -112,6 +119,7 @@ namespace GliderScoreRemote
                         foreach (UdpClient udpClient in sendClients)
                         {
                             udpClient.Send(udpDataBytes, udpDataBytes.Length, ipEndPointBroadcast);
+                            System.Diagnostics.Debug.WriteLine("UDP send: " + udpClient.Client.LocalEndPoint.ToString() + ", " + data.message);
                         }
                     }
                     catch (Exception ex)
@@ -122,28 +130,32 @@ namespace GliderScoreRemote
                     // handle the serial write
                     try
                     {
+                        if (!serialPort.PortName.Equals(data.comPort)) // switch ports
+                        {
+                            // close the old one if open
+                            if (serialPort.IsOpen)
+                            {
+                                serialPort.DiscardInBuffer();
+                                serialPort.DiscardOutBuffer();
+                                serialPort.Close();
+                            }
+                            // set the parameters
+                            serialPort.BaudRate = 9600;
+                            serialPort.PortName = data.comPort;
+                            serialPort.DataBits = 8;
+                            serialPort.Parity = Parity.None;
+                            serialPort.StopBits = StopBits.One;
+                            serialPort.Handshake = Handshake.None;
+                            serialPort.DtrEnable = true;
+                            serialPort.WriteTimeout = 250;
+                            if (!data.comPort.Equals("<none>"))
+                            {
+                                serialPort.Open();
+                            }
+                        }
                         // ignore if com port is <none>
                         if (!data.comPort.Equals("<none>"))
                         {
-                            if (!serialPort.PortName.Equals(data.comPort)) // switch ports
-                            {
-                                // close the old one if open
-                                if (serialPort.IsOpen) {
-                                    serialPort.DiscardInBuffer();
-                                    serialPort.DiscardOutBuffer();
-                                    serialPort.Close();
-                                }
-                                // set the parameters
-                                serialPort.BaudRate = 9600;
-                                serialPort.PortName = data.comPort;
-                                serialPort.DataBits = 8;
-                                serialPort.Parity = Parity.None;
-                                serialPort.StopBits = StopBits.One;
-                                serialPort.Handshake = Handshake.None;
-                                serialPort.DtrEnable = true;
-                                serialPort.WriteTimeout = 250;
-                                serialPort.Open();
-                            }
                             // if the port is open but nobody is taking the data, just flush it!
                             serialPort.DiscardOutBuffer();
                             serialPort.Write(data.message);

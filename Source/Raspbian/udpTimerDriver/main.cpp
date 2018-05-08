@@ -55,7 +55,7 @@ int main( int argc, char *argv[] ) {
 		}
 	}
 
-	cout << endl << argv[0] << " using serial port:" << serialPort << " UDP Port:" << udpPort << (verbose?" Verbose":"") << endl << endl;
+	cout << endl << argv[0] << " Version 1.0 - serial port:" << serialPort << " UDP Port:" << udpPort << (verbose?" Verbose":"") << endl << endl;
 
 	if ((recvSocket = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 		cout << "Unable to create socket, errno=" << errno << endl;

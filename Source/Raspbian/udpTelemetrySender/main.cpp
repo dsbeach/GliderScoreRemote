@@ -71,7 +71,7 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-	cout << endl << argv[0] << "version 1.0 -wirelessAdapter:" << wirelessAdapter << " UDP Port:" << udpPort << " interval:" << interval << endl << endl;
+	cout << endl << argv[0] << " version 1.0 - Adapter:" << wirelessAdapter << " UDP Port:" << udpPort << " interval:" << interval << endl << endl;
 
 	SSPiI2C *ssPiI2C = new SSPiI2C();
 	WiFiStats *wiFiStrength = new WiFiStats(wirelessAdapter.c_str());

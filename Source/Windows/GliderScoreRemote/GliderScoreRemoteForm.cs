@@ -96,7 +96,7 @@ namespace GliderScoreRemote
             if (!sTime.Equals("n/a"))
             {
                 string panelString = sTime.Replace("Time=", "");
-                panelString = "A" + panelString.Replace(":", "") + " \r";
+                panelString = "A" + panelString.Replace(":", "") + "\r";
 
                 // any changes to parameters are persisted in settings already and passed on in the deferred data
                 DeferredData data = new DeferredData();
